@@ -4,6 +4,13 @@ import { createRoot } from 'react-dom/client'
 import './assets/styles.css'
 
 import Home from './components/Home'
+import Loading from './components/Loading'
+import Questions from './components/Questions'
+import Result from './components/Result'
+
+// import { getLocation, findNearbyPlaces } from './lib/places'
+// getLocation().then(findNearbyPlaces).then((p) => console.table(p.slice(0, 15)))
+// getLocation().then(findNearbyPlaces).then((p) => console.log(p.length, 'places'))
 
 function App() {
   // 'home' → 'loading' → 'questions' → 'result'
@@ -14,9 +21,22 @@ function App() {
   return (
     <main>
       {screen === 'home' && <Home onStart={() => setScreen('loading')} />}
-      {screen === 'loading' && <p>Loading goes here</p>}
-      {screen === 'questions' && <p>Questions go here</p>}
-      {screen === 'result' && <p>Result goes here</p>}
+      {screen === 'loading' && <Loading onReady={() => setScreen('questions')} />}
+      {screen === 'questions' && (
+        <Questions
+          onDone={(r) => {
+            setResult(r)
+            setScreen('result')
+          }}
+        />
+      )}
+      {screen === 'result' && result && (
+        <Result
+          result={result}
+          onStartOver={() => setScreen('questions')}
+          onHome={() => setScreen('home')}
+        />
+      )}
     </main>
   )
 }
@@ -26,3 +46,9 @@ createRoot(document.getElementById('root')).render(
     <App />
   </StrictMode>,
 )
+// import { prebuiltAppConfig } from '@mlc-ai/web-llm'
+// console.table(
+//   prebuiltAppConfig.model_list
+//     .filter((m) => m.model_id.toLowerCase().includes('gemma'))
+//     .map((m) => ({ id: m.model_id, vramMB: m.vram_required_MB }))
+// )
