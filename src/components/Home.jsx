@@ -77,7 +77,8 @@ export default function Home({ onStart }) {
             )}
 
             {!name && <p>I'll also ask for your location so I can find places nearby.</p>}
-            <p>Everything runs on your computer. Your name, location, and answers never leave it.</p>
+            <p>Everything runs on your computer. Your name, and answers never leave it.</p>
+            <p>Your location is only used to look up nearby restaurants.</p>
 
             <button onClick={handleStart} disabled={cached === null}>
                 {cached ? "Let's pick!" : "Let's start"}
